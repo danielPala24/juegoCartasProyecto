@@ -47,13 +47,22 @@ public class Player {
         this.playerCards = playerCards;
     }
 
-    // Method to add a card to player's cards
+
     public void addCard(Card card) {
         this.playerCards.add(card);
     }
 
-    // Method to remove a card from player's cards
+
     public void removeCard(Card card) {
         this.playerCards.remove(card);
+    }
+    
+    public Card getCardByName(String cardName){
+        for (Card card : playerCards) {
+            if (card.getName().equalsIgnoreCase(cardName)) {
+                return card;
+            }
+        }
+        return null;
     }
 }

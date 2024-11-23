@@ -10,11 +10,12 @@ import java.util.ArrayList;
  *
  * @author PALA
  */
-public class Abilities {
+public class Ability {
     private ArrayList<Integer> damagePerType;
+    private String abilityName;
 
     // Constructor
-    public Abilities() {
+    public Ability() {
         this.damagePerType = new ArrayList<>(10);
     }
 
@@ -36,4 +37,15 @@ public class Abilities {
     public void removeDamage(int damageValue) {
         this.damagePerType.remove(Integer.valueOf(damageValue));
     }
+
+    public String getAbilityName() {
+        return abilityName;
+    }
+
+    public void setAbilityName(String abilityName) {
+        this.abilityName = abilityName;
+    }
+    
+    
+    
 }

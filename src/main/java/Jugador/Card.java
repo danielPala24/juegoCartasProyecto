@@ -4,6 +4,7 @@
  */
 package Jugador;
 
+import StrategyPattern.iAttackStrategy;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
@@ -15,14 +16,17 @@ public class Card {
     private ImageIcon image;
     private String name;
     private String type;
-    private ArrayList<Abilities> playerAbilities;
+    private ArrayList<Ability> cardAbilities;
+    private ArrayList<Ability> cardUsedAbilities;
+    private iAttackStrategy attackStrategy;
+    
 
     // Constructor
     public Card(ImageIcon image, String name, String type) {
         this.image = image;
         this.name = name;
         this.type = type;
-        this.playerAbilities = new ArrayList<>(5);
+        this.cardAbilities = new ArrayList<>(5);
     }
 
     // Getters and Setters
@@ -50,22 +54,36 @@ public class Card {
         this.type = type;
     }
 
-    public ArrayList<Abilities> getPlayerAbilities() {
-        return playerAbilities;
+    public ArrayList<Ability> getCardAbilities() {
+        return cardAbilities;
     }
 
-    public void setPlayerAbilities(ArrayList<Abilities> playerAbilities) {
-        this.playerAbilities = playerAbilities;
+    public void setCardAbilities(ArrayList<Ability> cardAbilities) {
+        this.cardAbilities = cardAbilities;
     }
 
-    // Method to add an ability to the card
-    public void addAbility(Abilities ability) {
-        this.playerAbilities.add(ability);
+    public ArrayList<Ability> getCardUsedAbilities() {
+        return cardUsedAbilities;
     }
 
-    // Method to remove an ability from the card
-    public void removeAbility(Abilities ability) {
-        this.playerAbilities.remove(ability);
+    public void setCardUsedAbilities(ArrayList<Ability> cardUsedAbilities) {
+        this.cardUsedAbilities = cardUsedAbilities;
+    }
+
+    public iAttackStrategy getAttackStrategy() {
+        return attackStrategy;
+    }
+
+    public void setAttackStrategy(iAttackStrategy attackStrategy) {
+        this.attackStrategy = attackStrategy;
+    }
+    
+    public void addAbility(Ability ability) {
+        this.cardAbilities.add(ability);
+    }
+
+    public void removeAbility(Ability ability) {
+        this.cardAbilities.remove(ability);
     }
 
     @Override
@@ -73,5 +91,13 @@ public class Card {
         return "Card{" + "name=" + name + ", type=" + type + '}';
     }
     
-    
+    public ArrayList<Integer> executeAttack(Ability selectedAbility) {
+        // Si no hay estrategia, retornar el daño base de la habilidad
+        if (attackStrategy == null) {
+            return new ArrayList<>(selectedAbility.getDamagePerType());
+        }
+        
+        // Si hay estrategia, ejecutar el ataque con la estrategia
+        return attackStrategy.executeStrategy(this, selectedAbility);
+    }
 }
