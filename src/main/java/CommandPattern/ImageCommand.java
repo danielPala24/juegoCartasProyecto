@@ -4,6 +4,7 @@
  */
 package CommandPattern;
 
+import Utilidades.getRelativePath;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -55,10 +56,11 @@ public class ImageCommand implements iCommand {
             }
 
             // Ruta base de las imágenes
-            String folderPath = "/C://Users//PALA//Documents//GitHubRepos//juegoCartasProyecto//src//main//resources//Images/";
+            String folderPath = new getRelativePath().getMainPath() + "\\resources\\Images\\";
             String imageNumber = args[1];
 
             // Construir la ruta de la imagen
+            System.out.println(folderPath + imageNumber + ".jpg");
             File imageFile = new File(folderPath + imageNumber + ".jpg"); // Ajusta la extensión si es PNG u otro formato.
 
             if (!imageFile.exists()) {

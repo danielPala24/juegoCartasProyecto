@@ -4,9 +4,12 @@
  */
 package CommandPattern;
 
-import JuegoServidor.GameManager;
+import Cliente.Cliente;
+import GameManager.GameManager;
 import Jugador.*;
 import StrategyPattern.*;
+import Utilidades.RedimensionarImagen;
+import Utilidades.getRelativePath;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -19,6 +22,12 @@ import javax.swing.JTextArea;
 public class CardCommand implements iCommand  {
     private ArrayList<File> imageFiles;
     private static final String COMMAND_NAME = "card";
+    private Cliente cliente;
+    
+    
+    public CardCommand (Cliente cliente){
+        this.cliente = cliente;
+    }
 
     @Override
     public String getCommandName() {
@@ -59,13 +68,14 @@ public class CardCommand implements iCommand  {
         int imageNum = Integer.parseInt(args[3]);
         
         // configuramos la imagen de la carta correctamente
-        loadImagesFromFolder("/C://Users//PALA//Documents//GitHubRepos//juegoCartasProyecto//src//main//resources//Images/");
+        loadImagesFromFolder(new getRelativePath().getMainPath() + "\\resources\\Images\\");
         
         File selectedImageFile = imageFiles.get(imageNum);
-        ImageIcon cardImage = new ImageIcon(selectedImageFile.getPath());
+        ImageIcon cardImage = RedimensionarImagen.redimensionarImagen(new ImageIcon(selectedImageFile.getPath()),140,195);
         // ahora creamos la carta
         Card newCard = new Card(cardImage, cardName, cardType);
-        
+        cliente.manager.getJugador().addCard(newCard);
+        cliente.manager.updateCards();
         console.append("\nCarta creada: " + newCard.toString());
     }
     
@@ -112,7 +122,7 @@ public class CardCommand implements iCommand  {
             Player currentPlayer = GameManager.getInstance().getCurrentPlayer();
             
             // obtenemos el jugador objetivo
-            Player targetPlayer = GameManager.getInstance().getPlayerByName(targetName);
+            Player targetPlayer = cliente.manager.getPlayerByName(targetName);
             if(targetPlayer == null){
                 console.append("\nError: Jugador objetivo no encontrado.\n");
                 return;
@@ -156,6 +166,12 @@ public class CardCommand implements iCommand  {
                         break;
                     case "bestcombination":
                         strategy = new BestCombinationStrategy(currentPlayer.getPlayerCards());
+                        break;
+                    case "average":
+                        strategy = new AverageStrategy(cliente.manager.getJugadores());
+                        break;
+                    case "optimal":
+                        strategy = new OptimalStrategy(cliente.manager.getJugadores());
                         break;
                     default:
                         console.append("\nError: Estrategia no reconocida. Opciones válidas: randomduplex, randomcombination, bestcombination, none\n");

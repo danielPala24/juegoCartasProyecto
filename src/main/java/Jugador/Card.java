@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
  * @author PALA
  */
 public class Card {
-    private ImageIcon image;
+    private ImageIcon image = null;
     private String name;
     private String type;
     private ArrayList<Ability> cardAbilities;
