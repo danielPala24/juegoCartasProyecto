@@ -19,6 +19,11 @@ public class getRelativePath {
         System.out.println(archivo.getAbsolutePath());
         return archivo.getAbsolutePath();
     }
+    
+    public String getMainPath(){
+        File archivo = new File("src\\main\\");
+        return archivo.getAbsolutePath();
+    }
 
     // Método para obtener las imágenes de una carpeta específica
     public List<File> getImagenesEnCarpeta(String nombreCarpeta) {

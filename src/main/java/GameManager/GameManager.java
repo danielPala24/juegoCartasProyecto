@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package JuegoServidor;
+package GameManager;
 
 import Jugador.Player;
 import java.util.ArrayList;
@@ -14,12 +14,13 @@ import java.util.ArrayList;
 public class GameManager {
     private static GameManager instance;
     private ArrayList<Player> players;
-    private Player currentPlayer;
+    private Player player;
+    private Player selectedPlayer;
     private int currentTurn;
     private boolean gameInProgress;
     
     // Constructor privado (Singleton)
-    private GameManager() {
+    public GameManager() {
         players = new ArrayList<>();
         currentTurn = 0;
         gameInProgress = false;
@@ -32,6 +33,8 @@ public class GameManager {
         }
         return instance;
     }
+    
+    
     
     // Métodos para gestionar jugadores
     public void addPlayer(Player player) {
@@ -48,14 +51,14 @@ public class GameManager {
     }
     
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return player;
     }
     
     // Métodos para gestionar el flujo del juego
     public void startGame() {
-        if (players.size() >= 2) {  // Asumiendo que necesitas al menos 2 jugadores
+        if (players.size() >= 2) {
             gameInProgress = true;
-            currentPlayer = players.get(0);
+            player = players.get(0);
             currentTurn = 1;
         } else {
             throw new IllegalStateException("No hay suficientes jugadores para iniciar el juego");
@@ -68,11 +71,11 @@ public class GameManager {
         }
         
         // Encuentra el índice del jugador actual
-        int currentIndex = players.indexOf(currentPlayer);
+        int currentIndex = players.indexOf(player);
         
         // Cambia al siguiente jugador
         currentIndex = (currentIndex + 1) % players.size();
-        currentPlayer = players.get(currentIndex);
+        player = players.get(currentIndex);
         
         // Si volvemos al primer jugador, incrementamos el turno
         if (currentIndex == 0) {
@@ -96,7 +99,7 @@ public class GameManager {
     // Método para terminar el juego
     public void endGame() {
         gameInProgress = false;
-        currentPlayer = null;
+        player = null;
         currentTurn = 0;
     }
     
@@ -107,8 +110,12 @@ public class GameManager {
     
     // Métodos auxiliares para el estado del juego
     public boolean isPlayerTurn(Player player) {
-        return gameInProgress && currentPlayer.equals(player);
+        return gameInProgress && player.equals(player);
     }
+    
+    
+    
+    
     
     // Método para verificar si el juego ha terminado
     

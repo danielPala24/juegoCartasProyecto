@@ -4,16 +4,25 @@
  */
 package Jugador;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author PALA
  */
-public class Player {
+public class Player implements Serializable{
     private int id;
     private String name;
     private ArrayList<Card> playerCards;
+    public boolean isPlaying = true;
+    public boolean isOwner = false;
+    public int wins = 0;
+    public  int losses = 0;
+    public int atacks = 0;
+    public int success = 0;
+    public int failed = 0;
+    public int giveUp = 0;
 
     // Constructor
     public Player(int id, String name) {
@@ -64,5 +73,19 @@ public class Player {
             }
         }
         return null;
+    }
+    
+    public String toStatusString(){
+        String str = name + " #" + id 
+                + "\nWins: " + wins
+                + "\nLosses: " + losses
+                + "\nAtacks: " + atacks
+                + "\nSuccess: " + success
+                + "\nFailed: " + failed
+                + "\nGiveUp: " + giveUp;
+        return str;
+    }
+    public String toRankingString(){
+        return name + "[" + wins + "/" + losses + "]";
     }
 }
